@@ -1,1 +1,13 @@
-rootProject.name = ""
+rootProject.name = "waiter"
+include 'bootstrap'
+include 'core'
+include 'commons'
+include 'bootstrap:bootstrap-worker'
+include 'bootstrap:bootstrap-api'
+include 'commons:utils'
+include 'core:domain'
+include 'core:infra'
+include 'core:application'
+include 'core:infra:infra-redis'
+findProject(':core:infra:infra-redis')?.name = 'infra-redis'
+
