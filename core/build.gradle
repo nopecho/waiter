@@ -1,7 +1,7 @@
 final springModules = subprojects.stream()
         .filter(p -> p.parent.name != this.project.name)
         .filter(p -> p.name != "domain")
-        .toList();
+        .toList()
 
 configure(springModules) {
     apply plugin: 'org.springframework.boot'
@@ -11,7 +11,6 @@ configure(springModules) {
     dependencies {
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-reactor'
         implementation 'io.projectreactor.kotlin:reactor-kotlin-extensions'
-
         implementation 'org.springframework.boot:spring-boot-starter'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
