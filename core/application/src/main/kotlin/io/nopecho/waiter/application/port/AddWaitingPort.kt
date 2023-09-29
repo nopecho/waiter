@@ -1,7 +1,7 @@
 package io.nopecho.waiter.application.port
 
-import io.nopecho.waiter.domain.WaitItem
+import io.nopecho.waiter.domain.Waiting
 
 interface AddWaitingPort {
-    fun add(item: WaitItem): Long
+    fun add(waiting: Waiting): Long
 }

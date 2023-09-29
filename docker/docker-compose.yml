@@ -5,3 +5,12 @@ services:
     image: redis:7.0-alpine
     ports:
       - "6379:6379"
+
+  mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_PASSWORD=nopecho
+      - MONGO_INITDB_ROOT_USERNAME=nopecho
+      - MONGO_INITDB_ROOT_DATABASE=waiter
