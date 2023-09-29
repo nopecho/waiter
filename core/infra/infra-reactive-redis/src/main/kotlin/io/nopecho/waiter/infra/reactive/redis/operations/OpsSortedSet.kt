@@ -1,4 +1,4 @@
-package io.nopecho.waiter.infra.reactive.redis.ops
+package io.nopecho.waiter.infra.reactive.redis.operations
 
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.reactive.awaitFirstOrDefault

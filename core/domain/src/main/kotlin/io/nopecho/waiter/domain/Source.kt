@@ -7,17 +7,17 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Source(
     val type: SourceType = SourceType.LINK,
-    val from: From = From(),
-    val to: To = To()
+    val from: SourceFrom = SourceFrom(),
+    val to: SourceTo = SourceTo()
 )
 
 @Serializable
-data class From(
+data class SourceFrom(
     val uri: HttpURI = HttpURI(),
 )
 
 @Serializable
-data class To(
+data class SourceTo(
     val uri: HttpURI = HttpURI(),
 )
 

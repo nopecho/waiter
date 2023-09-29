@@ -1,13 +1,27 @@
 rootProject.name = "waiter"
-include('bootstrap',
-        'bootstrap:bootstrap-worker',
-        'bootstrap:bootstrap-api')
 
-include('core',
+include(
+        'bootstrap',
+        'bootstrap:bootstrap-scheduler',
+        'bootstrap:bootstrap-api'
+)
+
+include(
+        'core',
         'core:domain',
         'core:application',
+        'core:interface',
+        'core:interface:interface-reactive-web',
+        'core:interface:interface-scheduler',
         'core:infra',
-        'core:infra:infra-reactive-redis')
+        'core:infra:infra-reactive-redis',
+        'core:infra:infra-reactive-mongo'
+)
 
-include('commons',
-        'commons:utils')
+include(
+        'commons',
+        'commons:utils',
+        'commons:contract',
+        'commons:spring'
+)
+

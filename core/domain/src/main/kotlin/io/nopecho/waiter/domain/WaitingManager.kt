@@ -11,14 +11,23 @@ data class WaitingManager(
 
 @Serializable
 data class WaitingManagerId(
-    val from: String = "from",
-    val to: String = "to"
+    val from: From = From(),
+    val to: To = To()
 ) {
-    fun getValue(): String = "$from:$to"
+    fun getValue(): String = "${from.value}:${to.value}"
 }
 
 @Serializable
 data class WaitingLine(
-    val queue: List<Waiting> = listOf()
+    val line: List<Waiting> = listOf()
 )
 
+@Serializable
+data class From(
+    val value: String = "from"
+)
+
+@Serializable
+data class To(
+    val value: String = "to"
+)

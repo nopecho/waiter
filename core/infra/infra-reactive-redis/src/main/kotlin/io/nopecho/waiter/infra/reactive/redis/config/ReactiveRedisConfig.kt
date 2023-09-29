@@ -3,6 +3,7 @@ package io.nopecho.waiter.infra.reactive.redis.config
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
@@ -13,8 +14,9 @@ class ReactiveRedisConfig(
     private val redisProperties: RedisProperties,
 ) {
 
+    @Primary
     @Bean
-    fun redisConnectionFactory(): ReactiveRedisConnectionFactory {
+    fun reactiveRedisConnectionFactory(): ReactiveRedisConnectionFactory {
         val configuration = RedisStandaloneConfiguration()
         configuration.hostName = redisProperties.host
         configuration.port = redisProperties.port
@@ -24,7 +26,7 @@ class ReactiveRedisConfig(
     }
 
     @Bean
-    fun reactiveTemplate(): ReactiveStringRedisTemplate {
-        return ReactiveStringRedisTemplate(redisConnectionFactory())
+    fun reactiveStringRedisTemplate(): ReactiveStringRedisTemplate {
+        return ReactiveStringRedisTemplate(reactiveRedisConnectionFactory())
     }
 }
