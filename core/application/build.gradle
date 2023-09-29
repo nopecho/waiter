@@ -1,4 +1,6 @@
 dependencies {
     implementation(project(':commons:contract'))
     implementation(project(':core:domain'))
+
+    implementation 'org.springframework:spring-tx'
 }
