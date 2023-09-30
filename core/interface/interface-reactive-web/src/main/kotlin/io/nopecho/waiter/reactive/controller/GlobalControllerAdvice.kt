@@ -5,6 +5,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.bind.support.WebExchangeBindException
+import org.springframework.web.server.ServerWebInputException
 
 @RestControllerAdvice
 class GlobalControllerAdvice {
@@ -19,6 +21,17 @@ class GlobalControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     suspend fun methodArgumentNotValidException(e: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
+        val errorMessages = e.bindingResult
+            .fieldErrors
+            .associateBy({ it.field }, { it.defaultMessage ?: "unknown error message" })
+            .map { ErrorMessage(it.value) }
+        val errors = ErrorResponse(400, errorMessages)
+
+        return badRequest(errors)
+    }
+
+    @ExceptionHandler(WebExchangeBindException::class)
+    fun webExchangeBindException(e: WebExchangeBindException): ResponseEntity<ErrorResponse> {
         val errorMessages = e.bindingResult
             .fieldErrors
             .associateBy({ it.field }, { it.defaultMessage ?: "unknown error message" })
@@ -46,6 +59,14 @@ class GlobalControllerAdvice {
 
     @ExceptionHandler(IllegalStateException::class)
     suspend fun illegalStateException(e: IllegalStateException): ResponseEntity<ErrorResponse> {
+        val message = ErrorMessage(e.message)
+        val errors = ErrorResponse(400, listOf(message))
+
+        return badRequest(errors)
+    }
+
+    @ExceptionHandler(ServerWebInputException::class)
+    suspend fun serverWebInputException(e: ServerWebInputException): ResponseEntity<ErrorResponse> {
         val message = ErrorMessage(e.message)
         val errors = ErrorResponse(400, listOf(message))
 
