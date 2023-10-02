@@ -10,3 +10,8 @@ data class Waiting(
     val score: Double = Double.MIN_VALUE,
     val startedAt: Instant = now(),
 )
+
+@Serializable
+data class WaitingLine(
+    val line: List<Waiting> = listOf()
+)

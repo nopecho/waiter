@@ -1,6 +1,4 @@
 dependencies {
-    implementation(project(':commons:contract'))
-    
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-reactor'
     implementation 'io.projectreactor.kotlin:reactor-kotlin-extensions'
 

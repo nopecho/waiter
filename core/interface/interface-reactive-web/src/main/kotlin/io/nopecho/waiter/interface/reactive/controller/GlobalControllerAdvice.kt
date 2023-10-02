@@ -1,4 +1,4 @@
-package io.nopecho.waiter.reactive.controller
+package io.nopecho.waiter.`interface`.reactive.controller
 
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException

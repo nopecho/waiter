@@ -1,6 +1,7 @@
-package io.nopecho.waiter.reactive.controller
+package io.nopecho.waiter.`interface`.reactive.controller
 
 import org.springframework.http.ResponseEntity
+import java.net.URI
 
 internal fun ok(body: Any? = null): ResponseEntity<Any> {
     return ResponseEntity
@@ -11,6 +12,14 @@ internal fun created(body: Any? = null): ResponseEntity<Any> {
     return ResponseEntity
         .status(201)
         .body(body)
+}
+
+internal fun movedPermanently(to: String): ResponseEntity<Any> {
+    val redirectUri = URI.create(to)
+    return ResponseEntity
+        .status(301)
+        .location(redirectUri)
+        .build()
 }
 
 internal fun badRequest(body: ErrorResponse? = null): ResponseEntity<ErrorResponse> {

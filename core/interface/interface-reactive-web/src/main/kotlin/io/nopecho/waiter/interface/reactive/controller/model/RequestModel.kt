@@ -1,9 +1,9 @@
-package io.nopecho.waiter.reactive.controller.model
+package io.nopecho.waiter.`interface`.reactive.controller.model
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
-data class WaitingRequestModel(
+data class ApplyRequestModel(
     @field:NotNull
     val source: SourceRequestModel? = null
 )

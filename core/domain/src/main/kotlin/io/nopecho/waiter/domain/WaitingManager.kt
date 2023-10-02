@@ -6,17 +6,16 @@ import java.util.*
 @Serializable
 data class WaitingManager(
     val source: Source,
-    val id: WaitingManagerId = WaitingManagerId(),
-    val backpressure: WaitingBackpressure = WaitingBackpressure(),
-    val waitingLine: WaitingLine = WaitingLine()
-)
+    val id: ManagerId = ManagerId(),
+    val backpressure: WaitingBackpressure = WaitingBackpressure()
+) {
+    fun canResolve(size: Long): Boolean {
+        return size <= backpressure.limit
+    }
+}
 
 @Serializable
-data class WaitingManagerId(
+data class ManagerId(
     val value: String = UUID.randomUUID().toString()
 )
 
-@Serializable
-data class WaitingLine(
-    val line: List<Waiting> = listOf()
-)

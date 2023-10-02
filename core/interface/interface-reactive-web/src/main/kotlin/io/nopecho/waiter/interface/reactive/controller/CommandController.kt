@@ -1,9 +1,10 @@
-package io.nopecho.waiter.reactive.controller
+package io.nopecho.waiter.`interface`.reactive.controller
 
 import io.nopecho.waiter.application.handlers.CommandHandlers
+import io.nopecho.waiter.application.handlers.command.AddWaitingCommand
 import io.nopecho.waiter.application.handlers.command.CreateWaitingMangerCommand
-import io.nopecho.waiter.reactive.controller.model.WaitingMangerCreateRequestModel
-import io.nopecho.waiter.reactive.controller.model.WaitingRequestModel
+import io.nopecho.waiter.`interface`.reactive.controller.model.ApplyRequestModel
+import io.nopecho.waiter.`interface`.reactive.controller.model.WaitingMangerCreateRequestModel
 import jakarta.validation.Valid
 import kotlinx.coroutines.coroutineScope
 import org.springframework.http.ResponseEntity
@@ -20,9 +21,20 @@ class CommandController(
 
     @PostMapping("/apply")
     suspend fun apply(
-        @Valid @RequestBody request: WaitingRequestModel
+        @Valid @RequestBody request: ApplyRequestModel
     ): ResponseEntity<Any> = coroutineScope {
-        ok()
+        requireNotNull(request.source)
+        requireNotNull(request.source.from)
+        requireNotNull(request.source.to)
+
+        val command = AddWaitingCommand(
+            from = request.source.from,
+            to = request.source.to
+        )
+
+        val event = handlers.handle(command)
+//        movedPermanently(command.to)
+        ok(event)
     }
 
     @PostMapping("/managers")
