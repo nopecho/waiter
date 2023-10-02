@@ -1,6 +1,5 @@
-package io.nopecho.waiter.application.factory
+package io.nopecho.waiter.application.handlers.command
 
-import io.nopecho.waiter.application.handlers.command.CreateWaitingMangerCommand
 import io.nopecho.waiter.domain.*
 import org.springframework.stereotype.Component
 

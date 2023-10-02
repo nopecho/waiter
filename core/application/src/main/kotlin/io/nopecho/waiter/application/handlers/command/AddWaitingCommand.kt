@@ -1,6 +1,5 @@
 package io.nopecho.waiter.application.handlers.command
 
-import io.nopecho.waiter.application.factory.WaitingFactory
 import io.nopecho.waiter.application.port.AddWaitingPort
 import io.nopecho.waiter.application.port.LoadWaitingManagerPort
 import io.nopecho.waiter.commons.contract.Command
