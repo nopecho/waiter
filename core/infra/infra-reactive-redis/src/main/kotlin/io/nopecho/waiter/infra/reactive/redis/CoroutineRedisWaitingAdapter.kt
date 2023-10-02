@@ -31,10 +31,12 @@ class CoroutineRedisWaitingAdapter(
     override suspend fun add(managerId: ManagerId, waiting: Waiting): Boolean = coroutineScope {
         val key = getKey(managerId)
         val value = getValue(waiting)
+        val score = getScore(waiting)
 
-        sortedSet.add(key, value, waiting.score).awaitSingle()
+        sortedSet.add(key, value, score).awaitSingle()
     }
 
     private fun getKey(managerId: ManagerId) = "$WAITING_MANAGER_PREFIX${managerId.value}"
     private fun getValue(waiting: Waiting) = Json.encodeToString(waiting)
+    private fun getScore(waiting: Waiting) = waiting.startedAt.toEpochMilliseconds().toDouble()
 }

@@ -3,11 +3,12 @@ package io.nopecho.waiter.domain
 import kotlinx.datetime.Clock.System.now
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import java.util.*
 
 @Serializable
 data class Waiting(
+    val id: String = UUID.randomUUID().toString(),
     val source: Source,
-    val score: Double = Double.MIN_VALUE,
     val startedAt: Instant = now(),
 )
 
