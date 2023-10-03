@@ -25,7 +25,8 @@ class CoroutineRedisWaitingAdapter(
     }
 
     override suspend fun count(waitingManager: WaitingManager): Long = coroutineScope {
-        sortedSet.size(waitingManager.id.value).awaitSingle()
+        sortedSet.size(waitingManager.id.value)
+            .awaitSingle()
     }
 
     override suspend fun add(managerId: ManagerId, waiting: Waiting): Boolean = coroutineScope {
@@ -33,7 +34,8 @@ class CoroutineRedisWaitingAdapter(
         val value = getValue(waiting)
         val score = getScore(waiting)
 
-        sortedSet.add(key, value, score).awaitSingle()
+        sortedSet.add(key, value, score)
+            .awaitSingle()
     }
 
     private fun getKey(managerId: ManagerId) = "$WAITING_MANAGER_PREFIX${managerId.value}"

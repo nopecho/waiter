@@ -20,19 +20,22 @@ class CoroutineMongoWaitingMangerAdapter(
     override suspend fun create(waitingManager: WaitingManager): WaitingManager = coroutineScope {
         val entity = WaitingMangerEntity.from(waitingManager)
 
-        val saved = repository.insert(entity).awaitSingle()
+        val saved = repository.insert(entity)
+            .awaitSingle()
 
         saved.toDomain()
     }
 
     override suspend fun load(managerId: ManagerId): WaitingManager = coroutineScope {
-        val found = repository.findById(managerId.value).awaitSingle()
+        val found = repository.findById(managerId.value)
+            .awaitSingle()
 
         found.toDomain()
     }
 
     override suspend fun load(source: Source): WaitingManager = coroutineScope {
-        val found = repository.findBySource(source).awaitSingle()
+        val found = repository.findBySource(source)
+            .awaitSingle()
 
         found.toDomain()
     }

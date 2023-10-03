@@ -10,13 +10,13 @@ class ReactiveSortedSet(
     private val template: ReactiveStringRedisTemplate
 ) {
 
-    private val defaultDuration = Duration.ofMinutes(60 * 24)
+    private val defaultExpireDuration = Duration.ofMinutes(60 * 24)
 
     fun add(key: String, value: String, score: Double): Mono<Boolean> {
         return template.opsForZSet()
             .add(key, value, score)
             .flatMap {
-                if (it) template.expire(key, defaultDuration)
+                if (it) template.expire(key, defaultExpireDuration)
                 else Mono.just(false)
             }
     }
