@@ -1,12 +1,15 @@
 package io.nopecho.waiter.`interface`.reactive.controller
 
 import io.nopecho.waiter.application.handlers.CommandHandlers
-import io.nopecho.waiter.application.handlers.command.AddWaitingCommand
 import io.nopecho.waiter.application.handlers.command.CreateWaitingMangerCommand
+import io.nopecho.waiter.application.handlers.command.RegisterWaitingCommand
+import io.nopecho.waiter.commons.contract.Event
+import io.nopecho.waiter.commons.utils.convertMap
 import io.nopecho.waiter.`interface`.reactive.controller.model.ApplyRequestModel
 import io.nopecho.waiter.`interface`.reactive.controller.model.WaitingMangerCreateRequestModel
 import jakarta.validation.Valid
 import kotlinx.coroutines.coroutineScope
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -16,41 +19,46 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1")
 class CommandController(
-    private val handlers: CommandHandlers
+    private val handlers: CommandHandlers,
+    @Value("\${waiter.client.url}")
+    private val waiterUrl: String
 ) {
 
     @PostMapping("/apply")
     suspend fun apply(
         @Valid @RequestBody request: ApplyRequestModel
     ): ResponseEntity<Any> = coroutineScope {
-        requireNotNull(request.source)
-        requireNotNull(request.source.from)
-        requireNotNull(request.source.to)
+        requireNotNull(request.destination)
+        requireNotNull(request.destination.url)
 
-        val command = AddWaitingCommand(
-            from = request.source.from,
-            to = request.source.to
+        val command = RegisterWaitingCommand(
+            destinationUrl = request.destination.url
         )
 
         val event = handlers.handle(command)
-//        movedPermanently(command.to)
-        ok(event)
+
+        val redirectionUrl = getRedirectionUrl(event)
+        movedPermanently(redirectionUrl)
     }
 
     @PostMapping("/managers")
     suspend fun create(
         @Valid @RequestBody request: WaitingMangerCreateRequestModel
     ): ResponseEntity<Any> = coroutineScope {
-        requireNotNull(request.source)
-        requireNotNull(request.source.from)
-        requireNotNull(request.source.to)
+        requireNotNull(request.destination)
+        requireNotNull(request.destination.url)
 
         val command = CreateWaitingMangerCommand(
-            from = request.source.from,
-            to = request.source.to
+            destinationUrl = request.destination.url
         )
 
         val event = handlers.handle(command)
         created(event)
+    }
+
+    private fun getRedirectionUrl(event: Event): String {
+        val eventMap = convertMap(event)
+        val managerId = eventMap["managerId"] ?: ""
+        return "$waiterUrl/$managerId"
     }
 }

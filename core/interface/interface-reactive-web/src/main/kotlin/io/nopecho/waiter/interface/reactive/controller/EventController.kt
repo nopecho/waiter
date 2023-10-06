@@ -1,7 +1,7 @@
 package io.nopecho.waiter.`interface`.reactive.controller
 
 import io.nopecho.waiter.application.handlers.CommandHandlers
-import io.nopecho.waiter.application.handlers.command.AddWaitingCommand
+import io.nopecho.waiter.application.handlers.command.RegisterWaitingCommand
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.springframework.http.codec.ServerSentEvent
@@ -24,9 +24,8 @@ class EventController(
         if (seq == 3L) {
             throw IllegalArgumentException()
         }
-        val command = AddWaitingCommand(
-            from = "http://google.com",
-            to = "https://naver.com"
+        val command = RegisterWaitingCommand(
+            destinationUrl = "https://naver.com"
         )
         return serverSentEvent(command)
     }

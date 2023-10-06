@@ -5,17 +5,15 @@ import jakarta.validation.constraints.NotNull
 
 data class ApplyRequestModel(
     @field:NotNull
-    val source: SourceRequestModel? = null
+    val destination: DestinationRequestModel? = null
 )
 
-data class SourceRequestModel(
+data class DestinationRequestModel(
     @field:NotBlank
-    val from: String? = null,
-    @field:NotBlank
-    val to: String? = null
+    val url: String? = null
 )
 
 data class WaitingMangerCreateRequestModel(
     @field:NotNull
-    val source: SourceRequestModel? = null
+    val destination: DestinationRequestModel? = null
 )

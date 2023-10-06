@@ -1,3 +1,5 @@
 dependencies {
-
+    implementation(project(':core::interface:interface-scheduler'))
+    implementation(project(':core:infra:infra-reactive-redis'))
+    implementation(project(':core:infra:infra-reactive-mongo'))
 }

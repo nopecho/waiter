@@ -7,8 +7,9 @@ import java.util.*
 
 @Serializable
 data class Waiting(
+    val managerId: ManagerId,
     val id: String = UUID.randomUUID().toString(),
-    val source: Source,
+    val destination: Destination = Destination(),
     val startedAt: Instant = now(),
 )
 

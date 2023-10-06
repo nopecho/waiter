@@ -5,13 +5,13 @@ import io.nopecho.waiter.domain.WaitingManager
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreatedWaitingMangerEvent(
+data class RegisteredWaitingEvent(
     val managerId: String,
     val destination: String,
 ) : Event {
     companion object {
-        fun from(waitingManager: WaitingManager): CreatedWaitingMangerEvent {
-            return CreatedWaitingMangerEvent(
+        fun from(waitingManager: WaitingManager): RegisteredWaitingEvent {
+            return RegisteredWaitingEvent(
                 managerId = waitingManager.id.value,
                 destination = waitingManager.destination.url,
             )

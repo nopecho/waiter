@@ -1,0 +1,3 @@
+waiter:
+  client:
+    url: http://localhost:9999

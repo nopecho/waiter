@@ -1,7 +1,7 @@
 package io.nopecho.waiter.infra.reactive.mongo.repository
 
+import io.nopecho.waiter.domain.Destination
 import io.nopecho.waiter.domain.ManagerId
-import io.nopecho.waiter.domain.Source
 import io.nopecho.waiter.domain.WaitingBackpressure
 import io.nopecho.waiter.domain.WaitingManager
 import org.springframework.data.annotation.Id
@@ -14,7 +14,7 @@ data class WaitingMangerEntity(
     @Id
     val id: String,
     @Indexed(unique = true)
-    val source: Source,
+    val destination: Destination,
     val backpressure: WaitingBackpressure,
     val createdAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -23,7 +23,7 @@ data class WaitingMangerEntity(
         fun from(waitingManager: WaitingManager): WaitingMangerEntity {
             return WaitingMangerEntity(
                 id = waitingManager.id.value,
-                source = waitingManager.source,
+                destination = waitingManager.destination,
                 backpressure = waitingManager.backpressure
             )
         }
@@ -32,7 +32,7 @@ data class WaitingMangerEntity(
     fun toDomain(): WaitingManager {
         return WaitingManager(
             id = ManagerId(id),
-            source = source,
+            destination = destination,
             backpressure = backpressure
         )
     }

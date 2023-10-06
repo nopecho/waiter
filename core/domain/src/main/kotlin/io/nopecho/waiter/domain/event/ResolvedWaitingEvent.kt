@@ -7,15 +7,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ResolvedWaitingEvent(
     val waitingId: String,
-    val fromUrl: String,
-    val toUrl: String,
+    val destinationUrl: String,
 ) : Event {
     companion object {
         fun from(waiting: Waiting): ResolvedWaitingEvent {
             return ResolvedWaitingEvent(
                 waitingId = waiting.id,
-                fromUrl = waiting.source.from.url,
-                toUrl = waiting.source.to.url,
+                destinationUrl = waiting.destination.url,
             )
         }
     }

@@ -12,7 +12,7 @@ fun isValidQueryParams(query: String?): Boolean {
     return regex.matches(query)
 }
 
-fun isUrl(value: String): Boolean {
+fun isValidUrl(value: String): Boolean {
     val regex = VerbalExpression.regex()
         .startOfLine()
         .then("http").maybe("s")

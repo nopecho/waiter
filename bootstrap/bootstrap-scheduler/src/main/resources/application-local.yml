@@ -1,0 +1,8 @@
+server:
+  port: 9998
+
+spring:
+  config:
+    import:
+      - 'classpath:application-local-mongo.yml'
+      - 'classpath:application-local-redis.yml'

@@ -6,3 +6,4 @@ spring:
     import:
       - 'classpath:application-local-mongo.yml'
       - 'classpath:application-local-redis.yml'
+      - 'classpath:application-local-web.yml'

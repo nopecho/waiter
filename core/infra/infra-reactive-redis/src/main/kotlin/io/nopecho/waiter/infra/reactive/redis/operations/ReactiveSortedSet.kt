@@ -2,6 +2,7 @@ package io.nopecho.waiter.infra.reactive.redis.operations
 
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.time.Duration
 
@@ -26,9 +27,16 @@ class ReactiveSortedSet(
             .size(key)
     }
 
-    fun popMin(key: String): Mono<String> {
+    fun popMinOrBlank(key: String): Mono<String> {
         return template.opsForZSet()
             .popMin(key)
-            .flatMap { Mono.just(it.value ?: "") }
+            .map { it?.value ?: "" }
+            .defaultIfEmpty("")
+    }
+
+    fun popMin(key: String, size: Long): Flux<String> {
+        return template.opsForZSet()
+            .popMin(key, size)
+            .mapNotNull { it.value }
     }
 }

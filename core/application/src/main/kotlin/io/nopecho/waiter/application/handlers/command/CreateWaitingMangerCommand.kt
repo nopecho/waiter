@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class CreateWaitingMangerCommandHandler(
-    private val factory: WaitingManagerFactory,
-    private val createPort: CreateWaitingManagerPort,
+    private val managerFactory: WaitingManagerFactory,
+    private val createManagerPort: CreateWaitingManagerPort,
 ) : CommandHandler {
     override fun canHandle(command: Command): Boolean {
         return command.isType(CreateWaitingMangerCommand::class.java)
@@ -23,17 +23,16 @@ class CreateWaitingMangerCommandHandler(
 
     override suspend fun handle(command: Command): Event = coroutineScope {
         val cmd = command as CreateWaitingMangerCommand
-        val waitingManager = factory.create(cmd)
+        val manager = managerFactory.create(cmd)
 
-        val created = createPort.create(waitingManager)
+        val created = createManagerPort.create(manager)
 
         CreatedWaitingMangerEvent.from(created)
     }
 }
 
 data class CreateWaitingMangerCommand(
-    val from: String,
-    val to: String,
+    val destinationUrl: String,
     val limit: Long = DEFAULT_LIMIT,
     val throughput: Long = DEFAULT_THROUGHPUT,
     val delay: Long = 1000
