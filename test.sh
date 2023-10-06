@@ -2,7 +2,7 @@
 
 url="http://localhost:9999/api/v1/apply"
 
-count=1000
+count=10000
 
 function run_apply() {
     for ((i=1; i<=count; i++)); do

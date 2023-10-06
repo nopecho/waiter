@@ -8,6 +8,7 @@ import io.nopecho.waiter.commons.contract.Event
 import io.nopecho.waiter.domain.Destination
 import io.nopecho.waiter.domain.event.RegisteredWaitingEvent
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -30,9 +31,11 @@ class AddWaitingCommandHandler(
         val manager = loadMangerPort.load(destination)
         val waiting = waitingFactory.create(manager, cmd)
 
-        registerWaitingPort.register(waiting)
+        launch {
+            registerWaitingPort.register(waiting)
+        }
 
-        RegisteredWaitingEvent.from(manager)
+        RegisteredWaitingEvent.from(waiting)
     }
 }
 

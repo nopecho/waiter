@@ -1,32 +1,44 @@
 package io.nopecho.waiter.`interface`.reactive.controller
 
 import io.nopecho.waiter.application.handlers.CommandHandlers
-import io.nopecho.waiter.application.handlers.command.RegisterWaitingCommand
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import io.nopecho.waiter.application.handlers.command.ResolveWaitingCommand
+import io.nopecho.waiter.commons.utils.convertMap
+import kotlinx.coroutines.reactor.mono
+import kotlinx.datetime.Clock
 import org.springframework.http.codec.ServerSentEvent
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Flux
+import java.time.Duration
 
 @RestController
 @RequestMapping("/api/v1")
 class EventController(
-    private val handlers: CommandHandlers
+    private val commandHandlers: CommandHandlers,
 ) {
 
-    @GetMapping("/stream/events/waiting")
-    fun apply(): Flow<ServerSentEvent<Any>> {
-        return flow { serverSentEvent() }
+    @GetMapping("/stream/events/waiting/{managerId}")
+    fun apply(
+        @PathVariable managerId: String,
+        @RequestParam waitingId: String,
+    ): Flux<ServerSentEvent<Any>> {
+        val command = ResolveWaitingCommand(waitingId, managerId)
+        return Flux.interval(Duration.ofMillis(200)).flatMap {
+            mono {
+                val event = commandHandlers.handle(command)
+                serverSentEvent(event)
+            }
+        }
     }
 
-    private fun serverSentEvent(seq: Long): ServerSentEvent<Any> {
-        if (seq == 3L) {
-            throw IllegalArgumentException()
-        }
-        val command = RegisterWaitingCommand(
-            destinationUrl = "https://naver.com"
-        )
-        return serverSentEvent(command)
+    private fun serverSentEvent(body: Any): ServerSentEvent<Any> {
+        val eventMap = convertMap(body)
+        val waitingStatus = eventMap["status"]?.toString() ?: ""
+
+        return ServerSentEvent.builder<Any>()
+            .id(Clock.System.now().toEpochMilliseconds().toString())
+            .event(waitingStatus)
+            .data(body)
+            .retry(DEFAULT_RETRY)
+            .build()
     }
 }

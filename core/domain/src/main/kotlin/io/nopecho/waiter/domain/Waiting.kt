@@ -11,9 +11,21 @@ data class Waiting(
     val id: String = UUID.randomUUID().toString(),
     val destination: Destination = Destination(),
     val startedAt: Instant = now(),
-)
+) {
+    fun startedAtToLong(): Long {
+        return startedAt.toEpochMilliseconds()
+    }
+}
 
 @Serializable
 data class WaitingLine(
     val line: List<Waiting> = listOf()
-)
+) {
+    fun size(): Int {
+        return line.size
+    }
+
+    fun canResolve(): Boolean {
+        return line.size <= 1
+    }
+}

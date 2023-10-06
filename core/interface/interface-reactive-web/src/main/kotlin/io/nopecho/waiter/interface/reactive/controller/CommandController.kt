@@ -10,6 +10,7 @@ import io.nopecho.waiter.`interface`.reactive.controller.model.WaitingMangerCrea
 import jakarta.validation.Valid
 import kotlinx.coroutines.coroutineScope
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -37,8 +38,11 @@ class CommandController(
 
         val event = handlers.handle(command)
 
-        val redirectionUrl = getRedirectionUrl(event)
-        movedPermanently(redirectionUrl)
+        val redirection = getRedirectionPair(event)
+        movedPermanently(
+            location = redirection.first,
+            headers = redirection.second
+        )
     }
 
     @PostMapping("/managers")
@@ -56,9 +60,24 @@ class CommandController(
         created(event)
     }
 
-    private fun getRedirectionUrl(event: Event): String {
+    private fun getRedirectionPair(event: Event): Pair<String, HttpHeaders> {
         val eventMap = convertMap(event)
         val managerId = eventMap["managerId"] ?: ""
-        return "$waiterUrl/$managerId"
+        val waitingId = eventMap["waitingId"]?.toString() ?: ""
+
+        return Pair(
+            first = "$waiterUrl/$managerId",
+            second = getHeaders(waitingId)
+        )
+    }
+
+    private fun getHeaders(waitingId: String): HttpHeaders {
+        return HttpHeaders().apply {
+            set("Set-Cookie", getCookieInfo(waitingId))
+        }
+    }
+
+    private fun getCookieInfo(waitingId: String): String {
+        return "$COOKIE_KEY=$waitingId; Path=/; Max-Age=3600; HttpOnly; Secure"
     }
 }

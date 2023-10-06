@@ -11,8 +11,8 @@ data class WaitingManager(
     val id: ManagerId = ManagerId(),
     val backpressure: WaitingBackpressure = WaitingBackpressure()
 ) {
-    fun canResolve(size: Long): Boolean {
-        return size <= backpressure.limit
+    fun isFull(size: Long): Boolean {
+        return size > backpressure.limit
     }
 }
 

@@ -1,5 +1,6 @@
 package io.nopecho.waiter.`interface`.reactive.controller
 
+import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import java.net.URI
 
@@ -14,10 +15,11 @@ internal fun created(body: Any? = null): ResponseEntity<Any> {
         .body(body)
 }
 
-internal fun movedPermanently(to: String): ResponseEntity<Any> {
-    val redirectUri = URI.create(to)
+internal fun movedPermanently(location: String, headers: HttpHeaders? = null): ResponseEntity<Any> {
+    val redirectUri = URI.create(location)
     return ResponseEntity
         .status(301)
+        .headers(headers)
         .location(redirectUri)
         .build()
 }
@@ -48,3 +50,5 @@ data class ErrorResponse(
 data class ErrorMessage(
     val message: String?
 )
+
+const val COOKIE_KEY = "wa_id"
