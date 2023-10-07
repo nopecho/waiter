@@ -1,6 +1,7 @@
 package io.nopecho.waiter.infra.reactive.mongo.repository
 
 import io.nopecho.waiter.domain.Destination
+import io.nopecho.waiter.domain.ManagerStatus
 import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository
 import org.springframework.stereotype.Repository
@@ -11,4 +12,5 @@ import reactor.core.publisher.Mono
 interface WaitingManagerReactiveRepository : ReactiveMongoRepository<WaitingMangerEntity, String> {
     fun findByDestination(destination: Destination): Mono<WaitingMangerEntity>
     fun findAllBy(pageable: Pageable): Flux<WaitingMangerEntity>
+    fun findAllByStatus(status: ManagerStatus, pageable: Pageable): Flux<WaitingMangerEntity>
 }

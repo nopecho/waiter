@@ -1,6 +1,6 @@
 package io.nopecho.waiter.application.handlers.command
 
-import io.nopecho.waiter.application.port.LoadWaitingManagerPort
+import io.nopecho.waiter.application.port.LoadManagerPort
 import io.nopecho.waiter.application.port.LoadWaitingPort
 import io.nopecho.waiter.commons.contract.Command
 import io.nopecho.waiter.commons.contract.CommandHandler
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 @Service
 class ResolveWaitingCommandHandler(
     private val loadWaitingPort: LoadWaitingPort,
-    private val loadManagerPort: LoadWaitingManagerPort
+    private val loadManagerPort: LoadManagerPort
 ) : CommandHandler {
 
     override fun canHandle(command: Command): Boolean {
@@ -26,10 +26,13 @@ class ResolveWaitingCommandHandler(
         val managerId = ManagerId(cmd.managerId)
         val waitingId = cmd.waitingId
 
-        val manager = async { loadManagerPort.load(managerId) }
-        val waitingLine = async { loadWaitingPort.loadWaitingLineBy(managerId, waitingId) }
+        val asyncManger = async { loadManagerPort.load(managerId) }
+        val asyncLine = async { loadWaitingPort.loadWaitingLineBy(managerId, waitingId) }
 
-        ResolvedWaitingEvent.from(waitingLine.await(), manager.await())
+        val waitingLine = asyncLine.await()
+            .register(asyncManger.await().destination)
+
+        ResolvedWaitingEvent.from(waitingLine)
     }
 }
 

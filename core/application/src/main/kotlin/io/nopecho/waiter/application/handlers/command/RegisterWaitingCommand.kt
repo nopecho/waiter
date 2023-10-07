@@ -1,6 +1,6 @@
 package io.nopecho.waiter.application.handlers.command
 
-import io.nopecho.waiter.application.port.LoadWaitingManagerPort
+import io.nopecho.waiter.application.port.LoadManagerPort
 import io.nopecho.waiter.application.port.RegisterWaitingPort
 import io.nopecho.waiter.commons.contract.Command
 import io.nopecho.waiter.commons.contract.CommandHandler
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class AddWaitingCommandHandler(
     private val waitingFactory: WaitingFactory,
-    private val loadMangerPort: LoadWaitingManagerPort,
+    private val loadMangerPort: LoadManagerPort,
     private val registerWaitingPort: RegisterWaitingPort,
 ) : CommandHandler {
 

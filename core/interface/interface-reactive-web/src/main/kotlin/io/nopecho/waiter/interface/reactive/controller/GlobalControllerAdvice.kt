@@ -1,5 +1,6 @@
 package io.nopecho.waiter.`interface`.reactive.controller
 
+import io.nopecho.waiter.`interface`.reactive.controller.model.*
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -24,7 +25,7 @@ class GlobalControllerAdvice {
         val errorMessages = e.bindingResult
             .fieldErrors
             .associateBy({ it.field }, { it.defaultMessage ?: "unknown error message" })
-            .map { ErrorMessage(it.value) }
+            .map { ErrorMessage("${it.key}: ${it.value}") }
         val errors = ErrorResponse(400, errorMessages)
 
         return badRequest(errors)
@@ -35,7 +36,7 @@ class GlobalControllerAdvice {
         val errorMessages = e.bindingResult
             .fieldErrors
             .associateBy({ it.field }, { it.defaultMessage ?: "unknown error message" })
-            .map { ErrorMessage(it.value) }
+            .map { ErrorMessage("${it.key}: ${it.value}") }
         val errors = ErrorResponse(400, errorMessages)
 
         return badRequest(errors)

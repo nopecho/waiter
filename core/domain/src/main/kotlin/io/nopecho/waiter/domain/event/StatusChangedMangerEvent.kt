@@ -6,17 +6,17 @@ import io.nopecho.waiter.domain.WaitingLineStatus
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResolvedWaitingEvent(
+data class StatusChangedMangerEvent(
     val status: WaitingLineStatus,
-    val waitingOrder: Int,
+    val waiting: Int,
     val destination: String = ""
 ) : Event {
 
     companion object {
-        fun from(waitingLine: WaitingLine): ResolvedWaitingEvent {
-            return ResolvedWaitingEvent(
+        fun from(waitingLine: WaitingLine): StatusChangedMangerEvent {
+            return StatusChangedMangerEvent(
                 status = waitingLine.getStatus(),
-                waitingOrder = waitingLine.size(),
+                waiting = waitingLine.size(),
                 destination = waitingLine.destination.url
             )
         }

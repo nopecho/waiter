@@ -5,3 +5,5 @@ interface Event {
         return this.javaClass == clazz
     }
 }
+
+class EmptyEvent : Event

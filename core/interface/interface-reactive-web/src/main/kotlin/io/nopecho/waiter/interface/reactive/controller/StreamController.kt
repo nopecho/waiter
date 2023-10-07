@@ -12,7 +12,7 @@ import java.time.Duration
 
 @RestController
 @RequestMapping("/api/v1")
-class EventController(
+class StreamController(
     private val commandHandlers: CommandHandlers,
 ) {
 
@@ -38,7 +38,7 @@ class EventController(
             .id(Clock.System.now().toEpochMilliseconds().toString())
             .event(waitingStatus)
             .data(body)
-            .retry(DEFAULT_RETRY)
+            .retry(Duration.ofMillis(3000))
             .build()
     }
 }

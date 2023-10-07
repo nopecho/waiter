@@ -1,12 +1,9 @@
 package io.nopecho.waiter.`interface`.reactive.controller
 
 import io.nopecho.waiter.application.handlers.CommandHandlers
-import io.nopecho.waiter.application.handlers.command.CreateWaitingMangerCommand
-import io.nopecho.waiter.application.handlers.command.RegisterWaitingCommand
 import io.nopecho.waiter.commons.contract.Event
 import io.nopecho.waiter.commons.utils.convertMap
-import io.nopecho.waiter.`interface`.reactive.controller.model.ApplyRequestModel
-import io.nopecho.waiter.`interface`.reactive.controller.model.WaitingMangerCreateRequestModel
+import io.nopecho.waiter.`interface`.reactive.controller.model.*
 import jakarta.validation.Valid
 import kotlinx.coroutines.coroutineScope
 import org.springframework.beans.factory.annotation.Value
@@ -25,16 +22,12 @@ class CommandController(
     private val waiterUrl: String
 ) {
 
-    @PostMapping("/apply")
+    @PostMapping("/waiting")
     suspend fun apply(
-        @Valid @RequestBody request: ApplyRequestModel
+        @Valid @RequestBody request: WaitingRegisterRequestModel
     ): ResponseEntity<Any> = coroutineScope {
-        requireNotNull(request.destination)
-        requireNotNull(request.destination.url)
 
-        val command = RegisterWaitingCommand(
-            destinationUrl = request.destination.url
-        )
+        val command = request.toRegisterCommand()
 
         val event = handlers.handle(command)
 
@@ -49,12 +42,8 @@ class CommandController(
     suspend fun create(
         @Valid @RequestBody request: WaitingMangerCreateRequestModel
     ): ResponseEntity<Any> = coroutineScope {
-        requireNotNull(request.destination)
-        requireNotNull(request.destination.url)
 
-        val command = CreateWaitingMangerCommand(
-            destinationUrl = request.destination.url
-        )
+        val command = request.toCreateCommand()
 
         val event = handlers.handle(command)
         created(event)

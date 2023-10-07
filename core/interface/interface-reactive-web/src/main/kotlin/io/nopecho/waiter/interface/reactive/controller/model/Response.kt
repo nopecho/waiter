@@ -1,4 +1,4 @@
-package io.nopecho.waiter.`interface`.reactive.controller
+package io.nopecho.waiter.`interface`.reactive.controller.model
 
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity

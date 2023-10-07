@@ -2,6 +2,6 @@ package io.nopecho.waiter.application.port
 
 import io.nopecho.waiter.domain.WaitingManager
 
-interface CreateWaitingManagerPort {
+interface CreateManagerPort {
     suspend fun create(waitingManager: WaitingManager): WaitingManager
 }
