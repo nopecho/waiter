@@ -1,4 +1,4 @@
-rootProject.name = "waiter"
+rootProject.name = "server"
 
 include(
         'bootstrap',
@@ -24,4 +24,3 @@ include(
         'commons:contract',
         'commons:spring'
 )
-

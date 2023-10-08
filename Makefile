@@ -1,4 +1,4 @@
-LOCAL_DC_FILE := $(CURDIR)/docker/docker-compose.yml
+LOCAL_DC_FILE := $(CURDIR)/docker-compose-local.yml
 
 up:
 	@docker-compose -f $(LOCAL_DC_FILE) up -d

@@ -10,6 +10,11 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.2' apply false
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 allprojects {
     group = 'io.nopecho'
     repositories {
@@ -48,9 +53,4 @@ allprojects {
     tasks.named('test') {
         useJUnitPlatform()
     }
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
 }
