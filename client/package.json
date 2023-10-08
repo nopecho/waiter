@@ -1,0 +1,15 @@
+{
+  "name": "client",
+  "private": true,
+  "packageManager": "yarn@3.6.4",
+  "workspaces": [
+    "./*"
+  ],
+  "scripts": {
+    "wu": "yarn workspace waiter-user",
+    "wa": "yarn workspace waiter-admin"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}
