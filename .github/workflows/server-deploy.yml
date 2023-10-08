@@ -16,3 +16,14 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: now
+        with:
+          format: YYYY-MM-DDTHH:mm
+          utcOffset: "+09:00"
+
+      - name: echo
+        run: |
+          echo ${{steps.now.outputs.formattedTime}}
