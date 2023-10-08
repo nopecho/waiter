@@ -14,5 +14,5 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          distribution: 'corretto'
+          distribution: 'zulu'
           java-version: '17'
