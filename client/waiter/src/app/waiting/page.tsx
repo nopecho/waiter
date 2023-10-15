@@ -51,40 +51,61 @@ const Number = styled.div`
                   : css`${fadeOut} 0.1s ease-out forwards`}; // if it's the old number, fade it out
 `;
 
+const animateNumber = (start, end, duration, update) => {
+    const startTime = performance.now();
+
+    const animate = (currentTime) => {
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        const currentNumber = Math.floor(start + (end - start) * progress);
+
+        update(currentNumber);
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            update(end);
+        }
+    };
+
+    requestAnimationFrame(animate);
+};
+
 const WaitingPage = () => {
     const [number, setNumber] = useState<number>(0);
     const [direction, setDirection] = useState('up'); // Add direction state
-    const prevNumberRef = useRef();
+    const prevNumberRef = useRef(number);
 
     useEffect(() => {
+        animateNumber(prevNumberRef.current, number, 50, setNumber);
         prevNumberRef.current = number;
     }, [number]);
 
     const increase = () => {
-        setDirection('up'); // Set direction up on increase
-        setNumber((prev) => prev + 1);
+        setNumber((prev) => prev + Math.floor(Math.random() * 100000 + 1));
     };
 
     const decrease = () => {
-        setDirection('down'); // Set direction down on decrease
-        setNumber((prev) => prev - 1);
+        setNumber((prev) => prev - Math.floor(Math.random() * 10000 + 1));
     };
 
     return (
-        <div style={{textAlign: 'center', marginTop: '50px'}}>
-            <button onClick={increase}>Increase</button>
-            <button onClick={decrease}>Decrease</button>
-            <NumberContainer>
-                {(prevNumberRef.current !== number) && (
-                    <Number key={prevNumberRef.current} direction={direction} isCurrent={false}>
-                        {prevNumberRef.current}
+        <>
+            <div style={{textAlign: 'center', marginTop: '50px'}}>
+                <button onClick={increase}>Increase</button>
+                <button onClick={decrease}>Decrease</button>
+                <NumberContainer>
+                    {(prevNumberRef.current !== number) && (
+                        <Number key={prevNumberRef.current} direction={direction} isCurrent={false}>
+                            {prevNumberRef.current}
+                        </Number>
+                    )}
+                    <Number key={number} direction={direction} isCurrent={true}>
+                        {number}
                     </Number>
-                )}
-                <Number key={number} direction={direction} isCurrent={true}>
-                    {number}
-                </Number>
-            </NumberContainer>
-        </div>
+                </NumberContainer>
+            </div>
+        </>
     );
 };
 
