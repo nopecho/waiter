@@ -51,8 +51,8 @@ const Number = styled.div`
                   : css`${fadeOut} 0.1s ease-out forwards`}; // if it's the old number, fade it out
 `;
 
-const App = () => {
-    const [number, setNumber] = useState(0);
+const WaitingPage = () => {
+    const [number, setNumber] = useState<number>(0);
     const [direction, setDirection] = useState('up'); // Add direction state
     const prevNumberRef = useRef();
 
@@ -88,4 +88,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default WaitingPage;
