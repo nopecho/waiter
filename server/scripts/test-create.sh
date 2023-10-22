@@ -2,7 +2,7 @@
 
 url="http://localhost:9999/api/v1/managers"
 
-count=10000
+count=1
 
 function run_create() {
     for ((i=1; i<=count; i++)); do

@@ -38,4 +38,13 @@ else
 	echo "build module 'TARGET' must be not empty"
 endif
 
+run: build-docker
+ifdef TARGET
+	docker run \
+	--env-file <(infisical export --token="$(INFISICAL_TOKEN)" --env="$(INFISICAL_ENV)" | sed "s/'//g") \
+	$(TAG)
+else
+	echo "run 'TARGET' must be not empty"
+endif
+
 default: up

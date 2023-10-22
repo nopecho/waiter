@@ -2,7 +2,7 @@ spring:
   data:
     mongodb:
       # mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database.collection][?options]]
-      uri: mongodb://local:local@localhost:27017
+      uri: ${MONGODB_URL}
       auto-index-creation: true
-      authentication-database: admin
-      database: local
+      authentication-database: ${MONGODB_DATABASE_FOR_AUTH}
+      database: ${MONGODB_DATABASE_FOR_WAITER}

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 
-@Document
+@Document(collection = "waiting_mangers")
 data class WaitingMangerEntity(
     @Id
     val id: String,

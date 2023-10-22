@@ -1,0 +1,9 @@
+server:
+  port: 10000
+
+spring:
+  config:
+    import:
+      - 'classpath:application-production-mongo.yml'
+      - 'classpath:application-production-redis.yml'
+      - 'classpath:application-production-web.yml'
