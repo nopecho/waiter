@@ -1,8 +1,14 @@
-name: Deploy Server
+name: Deploy Server - waiter-api
 
 on:
   push:
-    branches: [ main ]
+    tags:
+      - waiter-api-v*.*.*
+
+env:
+  BUILD_TARGET: bootstrap-api
+  APP_NAME: waiter-api
+  DOCKERHUB_PATH: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_PRIVATE_REPO }}
 
 jobs:
   build:
@@ -17,13 +23,19 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Get current time
-        uses: 1466587594/get-current-time@v2
-        id: now
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
         with:
-          format: YYYY-MM-DDTHH:mm
-          utcOffset: "+09:00"
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: echo
+      - name: Extract version from tag
+        id: tag_version
+        run: echo "::set-output name=version::$(echo ${GITHUB_REF#refs/tags/$APP_NAME-v})"
+
+      - name: Build and Push to DockerHub
+        env:
+          IMAGE_TAG: $DOCKERHUB_PATH:$APP_NAME-${{ steps.tag_version.outputs.version }}
         run: |
-          echo ${{steps.now.outputs.formattedTime}}
+          make build-docker TARGET=$BUILD_TARGET TAG=$IMAGE_TAG
+          docker push $IMAGE_TAG

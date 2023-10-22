@@ -32,7 +32,7 @@ ifdef TARGET
 	cd $(BUILD_PATH)/$(TARGET) && \
 	docker build \
 	--build-arg APP_NAME=$(TARGET) \
-	--tag $(DOCKER_REGISTRY)/$(TARGET):$(TAG) \
+	--tag $(TAG) \
 	.
 else
 	echo "build module 'TARGET' must be not empty"
