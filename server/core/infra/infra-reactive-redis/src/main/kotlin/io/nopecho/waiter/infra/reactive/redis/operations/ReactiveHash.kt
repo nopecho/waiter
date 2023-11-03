@@ -1,5 +1,6 @@
 package io.nopecho.waiter.infra.reactive.redis.operations
 
+import org.springframework.data.redis.core.ReactiveHashOperations
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
@@ -16,8 +17,7 @@ class ReactiveHash<V : Any>(
         hashValue: V,
         duration: Duration = Duration.ofMinutes(60 * 24)
     ): Mono<Boolean> {
-        return template.opsForHash<String, V>()
-            .put(key, hashKey, hashValue)
+        return hash<V>().put(key, hashKey, hashValue)
             .flatMap {
                 if (it) template.expire(key, duration)
                 else Mono.just(false)
@@ -25,8 +25,16 @@ class ReactiveHash<V : Any>(
     }
 
     fun getOrEmpty(key: String, hashKey: String): Mono<String> {
-        return template.opsForHash<String, String>()
-            .get(key, hashKey)
+        return hash<String>().get(key, hashKey)
             .defaultIfEmpty("")
+    }
+
+    fun remove(key: String, hashKey: String) {
+        hash<String>().remove(key, hashKey)
+            .subscribe()
+    }
+
+    private fun <V> hash(): ReactiveHashOperations<String, String, V> {
+        return template.opsForHash()
     }
 }

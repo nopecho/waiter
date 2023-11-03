@@ -6,7 +6,7 @@
     "./*"
   ],
   "scripts": {
-    "waiter": "yarn workspace waiter"
+    "w": "yarn workspace waiter"
   },
   "devDependencies": {
     "typescript": "^5.2.2"

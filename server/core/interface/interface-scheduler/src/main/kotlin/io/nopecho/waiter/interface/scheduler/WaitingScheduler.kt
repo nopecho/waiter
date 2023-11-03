@@ -6,13 +6,14 @@ import kotlinx.coroutines.runBlocking
 import org.springframework.scheduling.annotation.Async
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import java.util.concurrent.TimeUnit
 
 @Service
 class WaitingScheduler(
     private val handlers: CommandHandlers,
 ) {
     @Async
-    @Scheduled(fixedDelay = 111)
+    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.SECONDS)
     fun takeSchedule() {
         val command = TakeWaitingCommand()
         runBlocking {

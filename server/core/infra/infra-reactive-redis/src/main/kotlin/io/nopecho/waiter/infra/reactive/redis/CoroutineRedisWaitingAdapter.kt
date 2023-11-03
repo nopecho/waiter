@@ -75,7 +75,11 @@ class CoroutineRedisWaitingAdapter(
         val size = getTakeSize(manager)
 
         sortedSet.popMin(key, size)
-            .map { convertWaiting(it) }
+            .map {
+                val waiting = convertWaiting(it)
+                hashIndex.remove(getIndexKey(waiting), waiting.id)
+                waiting
+            }
             .collectList()
             .awaitSingle()
     }
