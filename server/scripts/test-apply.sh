@@ -2,7 +2,7 @@
 
 url="http://localhost:9999/api/v1/waiting"
 
-count=10000
+count=100
 
 function run_apply() {
     for ((i=1; i<=count; i++)); do
@@ -18,7 +18,13 @@ function run_apply() {
     done
 }
 
-run_apply 1 &
+function repeat_run_apply() {
+    for (( i = 0; i < $1; i++ )); do
+        run_apply 1 &
+    done
+}
+
+repeat_run_apply 2000
 
 # Wait for all background processes to finish
 wait

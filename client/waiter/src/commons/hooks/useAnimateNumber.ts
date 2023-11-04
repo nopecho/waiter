@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
+import {DurationEffect} from "@/commons/enums/enums";
 
-const useAnimateNumber = (end, duration) => {
+const useAnimateNumber = (end: number, duration: DurationEffect) => {
     const start = Math.floor(end * 0.7);
     const [number, setNumber] = useState<number>(start);
     const ref = useRef();
@@ -9,7 +10,7 @@ const useAnimateNumber = (end, duration) => {
         const startTime = performance.now();
         const animate = (currentTime) => {
             const timeElapsed = currentTime - startTime;
-            const progress = Math.min(timeElapsed / duration, 1);
+            const progress = Math.min(timeElapsed / duration.valueOf(), 1);
             const newNumber = Math.floor(start + (end - start) * progress);
 
             setNumber(newNumber);
@@ -28,7 +29,7 @@ const useAnimateNumber = (end, duration) => {
         };
     }, [start, end, duration]);
 
-    return [number];
+    return number;
 };
 
 export default useAnimateNumber;

@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import {useRouter} from "next/navigation";
+import Button from "@/app/_components/Button";
 
 interface IWaitingResponse {
     redirectUri: string;
@@ -27,9 +28,10 @@ const DashboardPage = () => {
     }
 
     return (
-        <button onClick={() => handle()}>
-            버튼!!
-        </button>
+        <Button
+            text={"버틍"}
+            onClick={handle}
+        />
     );
 };
 

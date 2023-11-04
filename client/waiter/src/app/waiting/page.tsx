@@ -1,12 +1,13 @@
 import React from 'react';
-import WaitingOrder from "@/app/waiting/_components/WaitingOrder";
+import WaitingLine from "@/app/waiting/_components/WaitingLine";
 
 const WaitingPage = () => {
 
-
     return (
         <>
-            <WaitingOrder/>
+            <div className="text-2xl overflow-hidden text-center mt-12">
+                <WaitingLine/>
+            </div>
         </>
     );
 };
