@@ -36,7 +36,7 @@ data class WaitingLine(
     }
 
     private fun canResolve(): Boolean {
-        return size() <= 1
+        return size() == 0
     }
 }
 

@@ -8,8 +8,8 @@ import java.time.LocalDateTime
 import java.util.*
 
 const val DEFAULT_THROUGHPUT = 100L
-const val NOT_VALID_START_AFTER_END = "종료일이 시작일 보다 이 전일 수 없습니다."
-const val NOT_VALID_START_AFTER_PROCESSING = "처리일이 시작일 보다 이 전일 수 없습니다."
+const val NOT_VALID_OPEN_AFTER_CLOSE = "종료일이 시작일 보다 이 전일 수 없습니다."
+const val NOT_VALID_OPEN_AFTER_START = "처리일이 시작일 보다 이 전일 수 없습니다."
 
 data class WaitingManager(
     val id: ManagerId = ManagerId(),
@@ -20,11 +20,11 @@ data class WaitingManager(
 ) {
     fun changeStatus(date: LocalDateTime): WaitingManager {
         return when {
-            period.isAfterEndDate(date) -> with(ManagerStatus.DONE)
+            period.isAfterCloseDate(date) -> with(ManagerStatus.DONE)
 
-            period.isBetweenEndToProcessing(date) -> with(ManagerStatus.IN_PROGRESS)
+            period.isBetweenStartToClose(date) -> with(ManagerStatus.IN_PROGRESS)
 
-            period.isBetweenProcessingToStart(date) -> with(ManagerStatus.READY)
+            period.isBetweenOpenToStart(date) -> with(ManagerStatus.READY)
 
             else -> with(ManagerStatus.PENDING)
         }
@@ -50,29 +50,29 @@ data class Destination(
 }
 
 data class ManagerPeriod(
+    val openDate: LocalDateTime,
     val startDate: LocalDateTime,
-    val processingDate: LocalDateTime,
-    val endDate: LocalDateTime = infinityDate(),
+    val closeDate: LocalDateTime = infinityDate(),
 ) {
     init {
-        require(endDate.isAfter(startDate)) { NOT_VALID_START_AFTER_END }
-        require(processingDate.isAfter(startDate)) { NOT_VALID_START_AFTER_PROCESSING }
+        require(closeDate.isAfter(openDate)) { NOT_VALID_OPEN_AFTER_CLOSE }
+        require(startDate.isAfter(openDate)) { NOT_VALID_OPEN_AFTER_START }
     }
 
-    fun isBetweenEndToProcessing(date: LocalDateTime): Boolean {
-        return date.isBefore(endDate) && date.isAfter(processingDate)
+    fun isBetweenStartToClose(date: LocalDateTime): Boolean {
+        return date.isAfter(startDate) && date.isBefore(closeDate)
     }
 
-    fun isBetweenProcessingToStart(date: LocalDateTime): Boolean {
-        return date.isBefore(processingDate) && date.isAfter(startDate)
+    fun isBetweenOpenToStart(date: LocalDateTime): Boolean {
+        return date.isAfter(openDate) && date.isBefore(startDate)
     }
 
-    fun isAfterEndDate(date: LocalDateTime): Boolean {
-        return date.isAfter(endDate)
+    fun isAfterCloseDate(date: LocalDateTime): Boolean {
+        return date.isAfter(closeDate)
     }
 
-    fun isBeforeStartDate(date: LocalDateTime): Boolean {
-        return date.isBefore(startDate)
+    fun isBeforeOpenDate(date: LocalDateTime): Boolean {
+        return date.isBefore(openDate)
     }
 }
 

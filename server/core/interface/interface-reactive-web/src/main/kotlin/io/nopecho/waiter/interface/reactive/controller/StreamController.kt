@@ -19,7 +19,7 @@ class StreamController(
     @GetMapping("/stream/events/waiting/{managerId}")
     fun apply(
         @PathVariable managerId: String,
-        @RequestParam waitingId: String,
+        @RequestParam(defaultValue = "") waitingId: String,
     ): Flux<ServerSentEvent<Any>> {
         val command = ResolveWaitingCommand(waitingId, managerId)
         return Flux.interval(Duration.ofSeconds(1)).flatMap {

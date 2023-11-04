@@ -31,10 +31,7 @@ class AddWaitingCommandHandler(
         val manager = loadMangerPort.load(destination)
         val waiting = waitingFactory.create(manager, cmd)
 
-        launch {
-            registerWaitingPort.register(waiting)
-        }
-
+        launch { registerWaitingPort.register(waiting) }
         RegisteredWaitingEvent.from(waiting)
     }
 }

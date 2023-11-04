@@ -34,7 +34,7 @@ class CreateWaitingMangerCommandHandler(
 data class CreateMangerCommand(
     val destinationUrl: String,
     val throughput: Long = DEFAULT_THROUGHPUT,
+    val openDate: LocalDateTime,
     val startDate: LocalDateTime,
-    val processingDate: LocalDateTime,
-    val endDate: LocalDateTime
+    val closeDate: LocalDateTime
 ) : Command

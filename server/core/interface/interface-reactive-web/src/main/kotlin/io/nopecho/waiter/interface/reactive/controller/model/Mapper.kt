@@ -7,9 +7,9 @@ fun WaitingMangerCreateRequestModel.toCreateCommand(): CreateMangerCommand {
     return CreateMangerCommand(
         destinationUrl = this.destination?.url!!,
         throughput = this.throughput!!,
-        startDate = this.period?.startDate!!,
-        processingDate = this.period.processingDate!!,
-        endDate = this.period.endDate!!
+        openDate = this.period?.startDate!!,
+        startDate = this.period.processingDate!!,
+        closeDate = this.period.endDate!!
     )
 }
 

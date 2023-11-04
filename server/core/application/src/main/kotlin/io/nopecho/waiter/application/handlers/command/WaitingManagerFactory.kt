@@ -12,9 +12,9 @@ class WaitingManagerFactory {
             destination = Destination(command.destinationUrl),
             throughput = command.throughput,
             period = ManagerPeriod(
+                openDate = command.openDate,
                 startDate = command.startDate,
-                processingDate = command.processingDate,
-                endDate = command.endDate
+                closeDate = command.closeDate
             )
         )
     }

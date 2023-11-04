@@ -23,7 +23,6 @@ class CommandController(
     suspend fun apply(
         @Valid @RequestBody request: WaitingRegisterRequestModel
     ): ResponseEntity<Any> = coroutineScope {
-
         val command = request.toRegisterCommand()
 
         val event = handlers.handle(command)
@@ -36,7 +35,6 @@ class CommandController(
     suspend fun create(
         @Valid @RequestBody request: WaitingMangerCreateRequestModel
     ): ResponseEntity<Any> = coroutineScope {
-
         val command = request.toCreateCommand()
 
         val event = handlers.handle(command)
