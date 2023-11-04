@@ -41,7 +41,9 @@ const useWaitingEvent = () => {
         return () => stream.close();
     }, [managerId, waitingId]);
 
-    return waiting;
+    const isWait = waiting.status === "WAIT";
+
+    return [waiting, isWait];
 };
 
 export default useWaitingEvent;

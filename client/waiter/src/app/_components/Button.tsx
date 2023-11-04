@@ -8,9 +8,10 @@ export interface IProps {
 const Button = ({
                     text,
                     onClick,
-                    className = "w-36 max-w-md h-8 hover:bg-teal-500 rounded-lg border-transparent bg-teal-800 text-base text-center",
+                    className = "w-36 max-w-md h-8 disabled:bg-gray-800 hover:bg-teal-500 rounded-lg border-transparent bg-teal-800 text-base text-center",
                     disabled = false
                 }: IProps) => {
+
     return (
         <button
             className={className}

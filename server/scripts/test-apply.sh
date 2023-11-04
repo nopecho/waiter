@@ -24,7 +24,7 @@ function repeat_run_apply() {
     done
 }
 
-repeat_run_apply 2000
+repeat_run_apply 2
 
 # Wait for all background processes to finish
 wait
