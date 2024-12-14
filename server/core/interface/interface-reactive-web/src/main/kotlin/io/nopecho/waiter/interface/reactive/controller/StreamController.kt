@@ -22,7 +22,7 @@ class StreamController(
         @RequestParam(defaultValue = "") waitingId: String,
     ): Flux<ServerSentEvent<Any>> {
         val command = ResolveWaitingCommand(waitingId, managerId)
-        return Flux.interval(Duration.ofSeconds(1)).flatMap {
+        return Flux.interval(Duration.ofMillis(500)).flatMap {
             mono {
                 val event = commandHandlers.handle(command)
                 serverSentEvent(event)

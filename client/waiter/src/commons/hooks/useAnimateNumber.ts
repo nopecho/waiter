@@ -1,8 +1,8 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {DurationEffect} from "@/commons/enums/enums";
 
 const useAnimateNumber = (end: number, duration: DurationEffect) => {
-    const start = Math.floor(end * 0.7);
+    const start = useMemo(() => Math.floor(end * 0.7), [end]);
     const [number, setNumber] = useState<number>(start);
     const ref = useRef();
 

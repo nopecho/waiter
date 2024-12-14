@@ -13,6 +13,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toMono
 
 @Component
 class CoroutineRedisWaitingAdapter(
@@ -75,10 +76,11 @@ class CoroutineRedisWaitingAdapter(
         val size = getTakeSize(manager)
 
         sortedSet.popMin(key, size)
-            .map {
+            .flatMap {
                 val waiting = convertWaiting(it)
                 hashIndex.remove(getIndexKey(waiting), waiting.id)
-                waiting
+                    .toMono()
+                    .map { waiting }
             }
             .collectList()
             .awaitSingle()

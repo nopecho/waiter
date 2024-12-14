@@ -6,7 +6,7 @@ import io.nopecho.waiter.domain.WaitingManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-const val SEPARATOR = "::"
+const val SEPARATOR = ":"
 const val INDEX_KEY_PREFIX = "INDEX$SEPARATOR"
 
 const val WAITING_KEY_PREFIX = "WAITING$SEPARATOR"
